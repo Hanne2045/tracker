@@ -942,10 +942,9 @@ return '<div class="top"><h1>Backup</h1></div><div class="qc"><span class="qk">L
 '<h2>Apple Health</h2><div class="qc hks"><label><span>Body weight (kg)</span><input id="hbw" type="text" inputmode="decimal" placeholder="e.g. 62" value="'+(S.ps.bw||'')+'"></label><label><span>Shortcut name</span><input id="hsc" type="text" value="'+(S.ps.sc||'Fit to Health')+'"></label><span class="qs">Calories are an estimate: about 5 kcal per kg body weight per hour of strength training.</span><details><summary>How to set up the Shortcut</summary><ol>'+
 '<li>Open the <b>Shortcuts</b> app, tap <b>+</b> and name it <b>'+(S.ps.sc||'Fit to Health')+'</b>.</li>'+
 '<li>Add <b>Get Dictionary from Input</b> and set it to <b>Shortcut Input</b>.</li>'+
-'<li>Add <b>Get Dictionary Value</b>, key <b>kcal</b>.</li>'+
-'<li>Add <b>Log Health Sample</b>: type <b>Active Energy</b>, value = Dictionary Value, unit <b>kcal</b>.</li>'+
-'<li>If your Shortcuts app has <b>Log Workout</b>, add it too: type <b>Traditional Strength Training</b>, use the keys <b>start</b> and <b>end</b> (or <b>minutes</b>) and <b>kcal</b>.</li>'+
-'<li>After a workout, tap <b>Send via Shortcut</b>. The first time, iPhone asks permission for Health.</li></ol></details></div>'+
+'<li>Add three <b>Get Dictionary Value</b> actions, with the keys <b>start</b>, <b>minutes</b> and <b>kcal</b>.</li>'+
+'<li>Add <b>Log Workout</b>: Type <b>Traditional Strength Training</b>, Date = <b>start</b>, Duration = <b>minutes</b> (in minutes), Calories = <b>kcal</b>. Leave Distance empty.</li>'+
+'<li>Check <b>Settings › Privacy &amp; Security › Health › Shortcuts</b> and turn on <b>Workouts</b>.</li>'+'<li>After a workout, tap <b>Send via Shortcut</b>. The first time, iPhone asks permission for Health.</li></ol></details></div>'+
 '<h2>Save</h2><div class="qc bkc"><span class="qs">Keep a copy in Files or iCloud Drive in case this device or browser loses its data.</span><button class="btn ac" data-a="file">Save backup file</button><button class="bkl" data-a="exp">Copy as text</button><p class="mu bkm" id="em"></p></div>'+
 '<h2>Restore</h2><div class="qc bkc"><span class="qs">Replaces all current data in the app.</span><button class="btn gh" data-a="pick">Choose backup file</button><input type="file" id="fi" accept=".json,application/json" hidden><details><summary>Paste text instead</summary><textarea id="ti" rows="4" placeholder="Paste backup text"></textarea><button class="btn gh" data-a="imp">Import text</button></details><p class="mu bkm" id="im"></p></div>'}
 function R(top){var v=V.v;$('m').innerHTML=v==='home'?home():v==='plan'?plan():v==='ex'?ex():v==='cal'?calv():v==='st'?stats():v==='sum'?summ():bk();
