@@ -1,5 +1,5 @@
 // Bump CACHE when you deploy a new version so phones pick it up.
-const CACHE = 'fit-v5';
+const CACHE = 'fit-v36';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
