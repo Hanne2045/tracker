@@ -426,7 +426,9 @@ svg.tr{width:14px;height:14px;fill:none;stroke:var(--ac);stroke-width:2;stroke-l
 .acs.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px #fff}
 .acu{background:conic-gradient(#ff5f5f,#ffb547,#c6ff3d,#5ac8fa,#a78bfa,#ff7ab6,#ff5f5f);overflow:hidden}
 .acu input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;opacity:0;cursor:pointer}
-.ov.lite{background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.ov.lite{background:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 10px calc(10px + env(safe-area-inset-bottom,0px));align-items:flex-end}
+.ov.lite:before{content:'';position:fixed;left:0;right:0;bottom:0;height:calc(10px + env(safe-area-inset-bottom,0px));background:rgba(11,11,13,.35);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);pointer-events:none}
+.ov.lite .rs{background:rgba(24,24,27,.78);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4)}
 .ov.lite .rs{box-shadow:0 -6px 24px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.06)}
 /* ---- v23: edit plan ---- */
 .tpr{display:flex;align-items:center;gap:10px}
@@ -606,6 +608,12 @@ var cl=function(v){return v.replace(/[<>"'&`\\]/g,'').replace(/\s+/g,' ').trim()
 if(!nm){er.textContent='Give the workout a name.';o.querySelector('#npn').focus();return}
 if(!sel.length){er.textContent='Pick at least one exercise.';return}
 var id='c'+Date.now().toString(36);S.cp.push({id:id,t:nm,s:fc||sel.length+' exercise'+(sel.length>1?'s':''),ex:sel.slice(),bg:bg});applyX();sv();o.remove();V={v:'plan',id:id};R(1)})}
+function chkSet(x,ix,on){var st=ensure(x)[ix];if(!st)return;
+if(st.t){if(on){sv();return R()}delete st.t;delete st.ra}else{var rr=parseInt(st.r,10),ww=parseFloat(st.w);
+if(isNaN(rr)||rr<1){rsheet(x,ix,'r');return}
+var lt0=lastT();st.r=rr;st.w=isNaN(ww)?0:ww;st.t=Date.now();if(lt0)st.ra=Math.round((st.t-lt0)/1000);hap();unlockAudio()}
+var al=ensure(x);if(al.every(function(q){return q.t})){var px=wlist();for(var j=px.indexOf(x)+1;j<px.length;j++){if(ensure(px[j]).some(function(q){return !q.t})){V.open=px[j];break}}}
+sv();R()}
 function rsheet(n,i,f0){var st=ensure(n)[i];if(!st)return;var c=ec(n),h=hist(n),ls=h.length?h[h.length-1].s:null,pq=ls?(ls[i]||ls[ls.length-1]):null,pg=prog(n),sq=pg?(pg[i]||pg[pg.length-1]):null,SP=12;
 var F={r:{st:1,u:'reps',mx:60},w:{st:c.step,u:'kg',mx:0}};['r','w'].forEach(function(k){var q=F[k];q.p=pq&&num(pq[k])?pq[k]:null;q.s=sq&&num(sq[k])?sq[k]:null;
 var v=num(st[k])?st[k]:(q.s!==null?q.s:q.p!==null?q.p:(k==='w'?20:c.lo));q.v=v;if(k==='w')q.mx=Math.max(100,Math.ceil(Math.max(v,q.p||0,q.s||0)*1.6/10)*10)});
@@ -632,7 +640,7 @@ var tf=t.closest('[data-tf]');if(tf){kbOff();f=tf.dataset.tf;build();return}
 var b=t.closest('[data-o]');if(!b)return;var a=b.dataset.o;
 if(a==='reset'){var q=F[f];if(q.p!==null){q.v=q.p;hap();upd()}return}
 if(a==='kb'){ri.value=fmt(F[f].v);rv.style.display='none';ri.style.display='block';ri.focus();ri.select();return}
-if(a==='done'){kbOff();st.r=Math.round(F.r.v);st.w=F.w.v;sv();o.remove();R()}});
+if(a==='done'){kbOff();st.r=Math.round(F.r.v);st.w=F.w.v;o.remove();if(st.r<1){sv();R();return}chkSet(n,i,1)}});
 build()}
 function addSheet(pid){var p=pl(pid);if(!p)return;var wa=S.a&&S.a.pl===pid?wlist():[],lib=Object.keys(M).filter(function(n){return p.ex.indexOf(n)<0&&wa.indexOf(n)<0}).sort();
 var o=document.createElement('div');o.className='ov';
@@ -947,12 +955,7 @@ if(a==='delset'){var ar2=ensure(x),i2=+b.dataset.i,rm=ar2.splice(i2,1)[0];UN={n:
 if(a==='undo'&&UN&&UN.rx&&S.a){S.a.rm=(S.a.rm||[]).filter(function(q){return q!==UN.rx});if(UN.s)S.a.ex[UN.rx]=UN.s;V.open=UN.rx;UN=null;sv();hideToast();return R()}
 if(a==='undo'){if(UN&&UN.wk&&!S.a){S.a=UN.wk;UN=null;sv();hideToast();V={v:'plan',id:S.a.pl};R(1);return}if(UN&&S.a&&!UN.wk&&!UN.rx){var ar3=ensure(UN.n);ar3.splice(Math.min(UN.i,ar3.length),0,UN.s);UN=null;sv();hideToast();R()}return}
 if(a==='rpk'){pick(x,+b.dataset.i);return}
-if(a==='chk'){var ix=+b.dataset.i,st=ensure(x)[ix];if(!st)return;
-if(st.t){delete st.t;delete st.ra}else{var rr=parseInt(st.r,10),ww=parseFloat(st.w);
-if(isNaN(rr)||rr<1){rsheet(x,ix,'r');return}
-var lt0=lastT();st.r=rr;st.w=isNaN(ww)?0:ww;st.t=Date.now();if(lt0)st.ra=Math.round((st.t-lt0)/1000);hap();unlockAudio()}
-var al=ensure(x);if(al.every(function(q){return q.t})){var px=wlist();for(var j=px.indexOf(x)+1;j<px.length;j++){if(ensure(px[j]).some(function(q){return !q.t})){V.open=px[j];break}}}
-sv();return R()}
+if(a==='chk'){chkSet(x,+b.dataset.i,0);return}
 if(a==='fin'){var n=0;for(var k in S.a.ex)n+=S.a.ex[k].filter(function(s){return s.t}).length;
 var o=document.createElement('div');o.className='ov';
 o.innerHTML='<div class="sheet"><p>'+(n?'Finish this workout?':'No sets logged yet.')+'</p><p class="mu" style="font-size:14px;margin:0 0 6px">'+(n?'Sets you did not check off are dropped.':'Stop this workout without saving?')+'</p>'+(n?'<button class="btn ac" data-o="f">Finish workout</button>':'')+'<button class="btn gh" data-o="s" style="color:#ff6b6b">Stop without saving</button><button class="btn gh" data-o="0">Cancel</button></div>';
